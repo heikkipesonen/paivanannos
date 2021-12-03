@@ -50,9 +50,9 @@ const getAdjectives = () =>
       .map(() => adjectives[Math.floor(Math.random() * adjectives.length)].toLowerCase())
   ).join(', ')
 
-const template = (file: string) => (lines: number) =>
+const template = (file: string, lines: number, adjectives: string) =>
   `
-  Päivän annoksen HERKKU-webstorea saat nauttimalla ${lines} riviä ${file}. ${getAdjectives()}.
+  Päivän annoksen HERKKU-webstorea saat nauttimalla ${lines} riviä ${file}. ${adjectives}.
   `
 
 const getDailyPortion = async () => {
@@ -61,8 +61,7 @@ const getDailyPortion = async () => {
   const file = contents[Math.floor(Math.random() * contents.length)]
   const count = await getLineCount(path.resolve(file))
 
-  console.log(readFile(file))
-  return template(file.replace(cwd, ''))(count)
+  return template(file.replace(cwd, ''), count, getAdjectives())
 }
 
 getDailyPortion().then(console.log)
